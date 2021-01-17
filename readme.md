@@ -1,6 +1,6 @@
 
-
-### Kurs: Utveckling mot databas och databasadministration
+# MongoDB Java CRUD Operations
+## Utveckling mot databas och databasadministration
 
 Innehåller min lösning för CRUD-operationer i MongoDB löst med Java.
 
