@@ -2,9 +2,9 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # target
-.target
-.target/
-.resources
+target
+target/
+resources
 MongoDB.iml
 
 # User-specific stuff
