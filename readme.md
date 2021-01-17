@@ -26,19 +26,19 @@ Skapa en ny databas via klienten till exempel “lab3”
 Skapa en kollektion vid namn “restaurants” med följande innehåll (se "restaurants.js"): OBS! Ni ska skapa detta i ert program med C#
 
 ```java
-	private static final String CONNECTION_STRING = "mongodb://127.0.0.1";
+private static final String CONNECTION_STRING = "mongodb://127.0.0.1";
 
-	public MongoCollection<Document> RestaurantDaoCollection() {
-		MongoClient mongo = MongoClients.create(CONNECTION_STRING);
-		MongoDatabase db = mongo.getDatabase("lab3");
+public MongoCollection<Document> RestaurantDaoCollection() {
+    MongoClient mongo = MongoClients.create(CONNECTION_STRING);
+    MongoDatabase db = mongo.getDatabase("lab3");
 
-		return db.getCollection("restaurants");
-	}
+    return db.getCollection("restaurants");
+}
 ```
 
 ```java
-	RestaurantDao restaurantDao = new RestaurantDaoImpl();
-	MongoCollection<Document> restaurantCollection = restaurantDao.RestaurantDaoCollection();
+RestaurantDao restaurantDao = new RestaurantDaoImpl();
+MongoCollection<Document> restaurantCollection = restaurantDao.RestaurantDaoCollection();
 ```
 
 
@@ -46,20 +46,20 @@ Skapa en kollektion vid namn “restaurants” med följande innehåll (se "rest
 Skriv en metod som skriver ut (Console.Writeline) alla dokument i samlingen. 
 
 ```java
-	public void printCollection(MongoCollection<Document> collection) {
+public void printCollection(MongoCollection<Document> collection) {
 
-		MongoCursor<Document> cursor = collection.find().iterator();
+    MongoCursor<Document> cursor = collection.find().iterator();
 
-		try (cursor) {
-			while (cursor.hasNext()) {
-				System.out.println(cursor.next().toJson(prettyPrint));
-			}
-		}
-	}
+    try (cursor) {
+        while (cursor.hasNext()) {
+            System.out.println(cursor.next().toJson(prettyPrint));
+        }
+    }
+}
 ```
 
 ```
-	restaurantDao.printCollection(restaurantCollection);
+restaurantDao.printCollection(restaurantCollection);
 ```
 
 
@@ -68,21 +68,21 @@ Skriv en metod som skriver ut namnet på alla dokument som har kategorin “Cafe
 OBS! Exkludera id så att bara namn visas 
 
 ```java
-	public void findStringPrintName(MongoCollection<Document> collection, String fieldName, String value, String include) {
+public void findStringPrintName(MongoCollection<Document> collection, String fieldName, String value, String include) {
 
-		List<Document> documents =
-				collection.find(eq(fieldName, value))
-						.projection(fields(excludeId(), include(include)))
-						.into(new ArrayList<>());
+    List<Document> documents =
+        collection.find(eq(fieldName, value))
+        .projection(fields(excludeId(), include(include)))
+        .into(new ArrayList<>());
 
-		for (Document restaurant : documents) {
-			System.out.println(restaurant.toJson(prettyPrint));
-		}
-	}
+    for (Document restaurant : documents) {
+        System.out.println(restaurant.toJson(prettyPrint));
+    }
+}
 ```
 
 ```java
-	restaurantDao.findStringPrintName(restaurantCollection,"categories", "Cafe", "name");
+restaurantDao.findStringPrintName(restaurantCollection,"categories", "Cafe", "name");
 ```
 
 
@@ -93,25 +93,25 @@ OBS! Ni ska använda increment .
 OBS! Skriv ut alla restauranger igen, så att jag kan se att “stars” blivit 6, för denna restaurang när jag kör ert program. 
 
 ```java
-	public void updateDocumentInc(MongoCollection<Document> collection, String findField, String findValue, String incField, int incBy) {
+public void updateDocumentInc(MongoCollection<Document> collection, String findField, String findValue, String incField, int incBy) {
 
-		Bson filter = eq(findField, findValue);
-		Bson update = inc(incField, incBy);
-		Bson updates = combine(update);
+    Bson filter = eq(findField, findValue);
+    Bson update = inc(incField, incBy);
+    Bson updates = combine(update);
 
-		collection.findOneAndUpdate(filter, updates);
+    collection.findOneAndUpdate(filter, updates);
 
-	}
+}
 ```
 
 ```java
-	restaurantDao.updateDocumentInc(restaurantCollection,
-				"name","XYZ Coffee Bar",
-				"stars",1 );
+restaurantDao.updateDocumentInc(restaurantCollection,
+                                "name","XYZ Coffee Bar",
+                                "stars",1 );
 ```
 
 ```java
-	restaurantDao.printCollection(restaurantCollection);
+restaurantDao.printCollection(restaurantCollection);
 ```
 
 
@@ -120,19 +120,19 @@ Skriv en metod som uppdaterar “name” för "456 Cookies Shop" till “123 Coo
 OBS! Skriv ut alla restauranger igen, så att jag kan se att namnet ändrats för denna restaurang när jag kör ert program. 
 
 ```java
-	public void updateDocumentName(MongoCollection<Document> collection, String findField, String findValue, String updateField, String updateValue) {
+public void updateDocumentName(MongoCollection<Document> collection, String findField, String findValue, String updateField, String updateValue) {
 
-		Bson filter = eq(findField, findValue);
-		Bson update = set(updateField, updateValue);
-		Bson updates = combine(update);
+    Bson filter = eq(findField, findValue);
+    Bson update = set(updateField, updateValue);
+    Bson updates = combine(update);
 
-		collection.updateOne(filter, updates);
+    collection.updateOne(filter, updates);
 
-	}
+}
 ```
 
 ```java
-	restaurantDao.printCollection(restaurantCollection);
+restaurantDao.printCollection(restaurantCollection);
 ```
 
 
@@ -141,20 +141,20 @@ Skriv en metod som aggregerar en lista med alla restauranger som har 4 eller fle
 OBS! Metoderna ska skriva ut via Console.Writeline resultatet, det vill säga, när jag kör ert program ska jag se resultatet från utskrifterna. 
 
 ```java
-	public void findByGteStars(MongoCollection<Document> collection, int stars) {
+public void findByGteStars(MongoCollection<Document> collection, int stars) {
 
-   List<Document> documents =
-         collection.find(gte("stars", stars))
-               .projection(fields(include("name", "stars")))
-               .into(new ArrayList<>());
+    List<Document> documents =
+        collection.find(gte("stars", stars))
+        .projection(fields(include("name", "stars")))
+        .into(new ArrayList<>());
 
-   for (Document restaurant : documents) {
-      System.out.println(restaurant.toJson(prettyPrint));
-   }
+    for (Document restaurant : documents) {
+        System.out.println(restaurant.toJson(prettyPrint));
+    }
 
 }
 ```
 
 ```java
-	restaurantDao.findByGteStars(restaurantCollection, 4);
+restaurantDao.findByGteStars(restaurantCollection, 4);
 ```
