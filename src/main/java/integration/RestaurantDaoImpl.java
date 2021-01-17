@@ -23,7 +23,7 @@ public class RestaurantDaoImpl implements RestaurantDao {
 	private static final String CONNECTION_STRING = "mongodb://127.0.0.1";
 
 	@Override
-	public MongoCollection<Document> RestaurantDaoCollection() {
+	public MongoCollection<Document> RestaurantCollection() {
 		MongoClient mongo = MongoClients.create(CONNECTION_STRING);
 		MongoDatabase db = mongo.getDatabase("lab3");
 
@@ -65,14 +65,6 @@ public class RestaurantDaoImpl implements RestaurantDao {
 		}
 	}
 
-	/**
-	 * Prints a list of documents based on filter parameters
-	 *
-	 * @param collection to iterate
-	 * @param fieldName  field to search
-	 * @param value      to search for
-	 * @param include    field to print
-	 */
 	@Override
 	public void findStringPrintName(MongoCollection<Document> collection, String fieldName, String value, String include) {
 
@@ -87,18 +79,17 @@ public class RestaurantDaoImpl implements RestaurantDao {
 	}
 
 	@Override
-	public void updateDocumentInc(MongoCollection<Document> collection, String findField, String findValue, String incField, int incBy) {
+	public void updateDocumentIncrementInt(MongoCollection<Document> collection, String findField, String findValue, String incField, int incBy) {
 
 		Bson filter = eq(findField, findValue);
 		Bson update = inc(incField, incBy);
 		Bson updates = combine(update);
 
 		collection.findOneAndUpdate(filter, updates);
-
 	}
 
 	@Override
-	public void updateDocumentName(MongoCollection<Document> collection, String findField, String findValue, String updateField, String updateValue) {
+	public void updateDocumentString(MongoCollection<Document> collection, String findField, String findValue, String updateField, String updateValue) {
 
 		Bson filter = eq(findField, findValue);
 		Bson update = set(updateField, updateValue);
@@ -110,6 +101,8 @@ public class RestaurantDaoImpl implements RestaurantDao {
 
 	@Override
 	public void findByGteStars(MongoCollection<Document> collection, int stars) {
+
+		System.out.println("Restaurants with more than " + stars + " stars: ");
 
 		List<Document> documents =
 				collection.find(gte("stars", stars))

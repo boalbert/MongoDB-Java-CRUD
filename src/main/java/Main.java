@@ -11,40 +11,37 @@ public class Main {
 
 	public static void main(String[] args) {
 
-//		Logger mongoLogger = Logger.getLogger( "org.mongodb.driver" );
-//		mongoLogger.setLevel(Level.SEVERE);
-
 		RestaurantDao restaurantDao = new RestaurantDaoImpl();
 
-		MongoCollection<Document> restaurantCollection = restaurantDao.RestaurantDaoCollection();
+		MongoCollection<Document> restaurantCollection = restaurantDao.RestaurantCollection();
 
 		restaurantCollection.drop();
 
-		Document rest = restaurantDao.createRestaurant(
+		Document restOne = restaurantDao.createRestaurant(
 				"5c39f9b5df831369c19b6bca",
 				"Sun Bakery Trattoria",
 				4,
 				new String[]{"Pizza", "Pasta", "Italian", "Coffee", "Sandwiches"});
 
-		Document restOne = restaurantDao.createRestaurant(
+		Document restTwo = restaurantDao.createRestaurant(
 				"5c3a0af0df83137e38e4b0db",
 				"Blue Bagels Grill",
 				3,
 				new String[]{"Bagels", "Cookies", "Sandwiches"});
 
-		Document restTwo = restaurantDao.createRestaurant(
+		Document restThree = restaurantDao.createRestaurant(
 				"5c39f9b5df831369c19b6bcc",
 				"Hot Bakery Cafe",
 				4,
 				new String[]{"Bakery", "Cafe", "Coffee", "Dessert"});
 
-		Document restThree = restaurantDao.createRestaurant(
+		Document restFour = restaurantDao.createRestaurant(
 				"5c39f9b5df831369c19b6bcd",
 				"XYZ Coffee Bar",
 				5,
 				new String[]{"Cafe", "Coffee", "Bakery", "Chocolates"});
 
-		Document restFour = restaurantDao.createRestaurant(
+		Document restFive = restaurantDao.createRestaurant(
 				"5c39f9b5df831369c19b6bce",
 				"456 Cookies Shop",
 				4,
@@ -53,26 +50,25 @@ public class Main {
 
 		List<Document> restaurantList = new ArrayList<>();
 
-		restaurantList.add(rest);
 		restaurantList.add(restOne);
 		restaurantList.add(restTwo);
 		restaurantList.add(restThree);
 		restaurantList.add(restFour);
+		restaurantList.add(restFive);
 
 		restaurantCollection.insertMany(restaurantList);
 
 		restaurantDao.findStringPrintName(restaurantCollection,"categories", "Cafe", "name");
 
-		restaurantDao.updateDocumentInc(restaurantCollection,
+		restaurantDao.updateDocumentIncrementInt(restaurantCollection,
 				"name","XYZ Coffee Bar",
 				"stars",1 );
 
 		restaurantDao.printCollection(restaurantCollection);
 
-		restaurantDao.updateDocumentName(restaurantCollection,
+		restaurantDao.updateDocumentString(restaurantCollection,
 				"name","456 Cookies Shop",
 				"name","123 Cookies Heaven");
-
 
 		restaurantDao.findByGteStars(restaurantCollection, 4);
 

@@ -4,7 +4,7 @@ import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
 public interface RestaurantDao {
-	MongoCollection<Document> RestaurantDaoCollection();
+	MongoCollection<Document> RestaurantCollection();
 
 	Document createRestaurant(String id, String name, int stars, String[] categories);
 
@@ -16,9 +16,9 @@ public interface RestaurantDao {
 
 	void findStringPrintName(MongoCollection<Document> collection, String fieldName, String value, String include);
 
-	void updateDocumentInc(MongoCollection<Document> collection, String findField, String findValue, String incField, int incByThis);
+	void updateDocumentIncrementInt(MongoCollection<Document> collection, String findField, String findValue, String incField, int incByThis);
 
-	void updateDocumentName(MongoCollection<Document> collection, String findField, String findValue, String updateField, String updateValue);
+	void updateDocumentString(MongoCollection<Document> collection, String findField, String findValue, String updateField, String updateValue);
 
 	void findByGteStars(MongoCollection<Document> collection, int stars);
 }

@@ -2,14 +2,14 @@
 
 ### Kurs: Utveckling mot databas och databasadministration
 
-Innehåller min lösning för CRUD-operationer i MongoDB med Java.
+Innehåller min lösning för CRUD-operationer i MongoDB löst med Java.
 
 * Main.java
 * integration
   * RestaurantDao.java
   * RestaurantDaoImpl.java
 
-Sammanfattad beskrivning av uppgift samtutdrag ur min kod nedan.
+Sammanfattad beskrivning av uppgift samt utdrag ur min kod nedan.
 
 ------
 
@@ -17,13 +17,11 @@ Skriv en C# klass (ni bestämmer själva vad den ska hetta).
 Ni kan använda lämpliga MongoDB paket ifrån NuGet
 Ert program ska: 
 
-
-
 Ansluta till mongodb (skapa en klient) 
 
 Skapa en ny databas via klienten till exempel “lab3” 
 
-Skapa en kollektion vid namn “restaurants” med följande innehåll (se "restaurants.js"): OBS! Ni ska skapa detta i ert program med C#
+Skapa en kollektion vid namn “restaurants” med följande innehåll (se "restaurants.json").
 
 ```java
 private static final String CONNECTION_STRING = "mongodb://127.0.0.1";
@@ -58,7 +56,7 @@ public void printCollection(MongoCollection<Document> collection) {
 }
 ```
 
-```
+```java
 restaurantDao.printCollection(restaurantCollection);
 ```
 
@@ -107,7 +105,7 @@ public void updateDocumentInc(MongoCollection<Document> collection, String findF
 ```java
 restaurantDao.updateDocumentInc(restaurantCollection,
                                 "name","XYZ Coffee Bar",
-                                "stars",1 );
+                                "stars", 1 );
 ```
 
 ```java
@@ -132,13 +130,18 @@ public void updateDocumentName(MongoCollection<Document> collection, String find
 ```
 
 ```java
+restaurantDao.updateDocumentName(restaurantCollection,
+      "name","456 Cookies Shop",
+      "name","123 Cookies Heaven");
+```
+
+```java
 restaurantDao.printCollection(restaurantCollection);
 ```
 
 
 
 Skriv en metod som aggregerar en lista med alla restauranger som har 4 eller fler “stars” och skriver ut endast “name” och “stars” 
-OBS! Metoderna ska skriva ut via Console.Writeline resultatet, det vill säga, när jag kör ert program ska jag se resultatet från utskrifterna. 
 
 ```java
 public void findByGteStars(MongoCollection<Document> collection, int stars) {
