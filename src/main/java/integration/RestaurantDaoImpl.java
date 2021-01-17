@@ -1,8 +1,6 @@
 package integration;
 
 import com.mongodb.client.*;
-import com.mongodb.client.model.FindOneAndUpdateOptions;
-import com.mongodb.client.model.ReturnDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.json.JsonWriterSettings;
@@ -67,29 +65,6 @@ public class RestaurantDaoImpl implements RestaurantDao {
 		}
 	}
 
-
-	@Override
-	public void updateDocumentInc(MongoCollection<Document> collection, String findField, String findValue, String incField, int incBy) {
-
-		Bson filter = eq(findField, findValue);
-		Bson update = inc(incField, incBy);
-		Bson updates = combine(update);
-
-		collection.findOneAndUpdate(filter, updates);
-
-	}
-
-	public void updateDocumentName(MongoCollection<Document> collection, String findField, String findValue, String updateField, String updateValue) {
-
-		Bson filter = eq(findField, findValue);
-		Bson update = set(updateField, updateValue);
-		Bson updates = combine(update);
-
-		collection.updateOne(filter, updates);
-
-	}
-
-
 	/**
 	 * Prints a list of documents based on filter parameters
 	 *
@@ -111,12 +86,35 @@ public class RestaurantDaoImpl implements RestaurantDao {
 		}
 	}
 
+	@Override
+	public void updateDocumentInc(MongoCollection<Document> collection, String findField, String findValue, String incField, int incBy) {
+
+		Bson filter = eq(findField, findValue);
+		Bson update = inc(incField, incBy);
+		Bson updates = combine(update);
+
+		collection.findOneAndUpdate(filter, updates);
+
+	}
+
+	@Override
+	public void updateDocumentName(MongoCollection<Document> collection, String findField, String findValue, String updateField, String updateValue) {
+
+		Bson filter = eq(findField, findValue);
+		Bson update = set(updateField, updateValue);
+		Bson updates = combine(update);
+
+		collection.updateOne(filter, updates);
+
+	}
+
+	@Override
 	public void findByGteStars(MongoCollection<Document> collection, int stars) {
 
 		List<Document> documents =
-			collection.find(gte("stars", stars))
-					.projection(fields( include("name", "stars")))
-					.into(new ArrayList<>());
+				collection.find(gte("stars", stars))
+						.projection(fields(include("name", "stars")))
+						.into(new ArrayList<>());
 
 		for (Document restaurant : documents) {
 			System.out.println(restaurant.toJson(prettyPrint));

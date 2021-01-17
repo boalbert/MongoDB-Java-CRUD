@@ -2,14 +2,9 @@ import com.mongodb.client.MongoCollection;
 import integration.RestaurantDao;
 import integration.RestaurantDaoImpl;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.gte;
-import static com.mongodb.client.model.Projections.excludeId;
 
 
 public class Main {
@@ -77,13 +72,6 @@ public class Main {
 		restaurantDao.updateDocumentName(restaurantCollection,
 				"name","456 Cookies Shop",
 				"name","123 Cookies Heaven");
-
-/*
-		Skriv en metod som aggregerar en lista med alla restauranger som har
-		4 eller fler “stars” och skriver ut endast “name” och “stars”
-
-		r
-*/
 
 
 		restaurantDao.findByGteStars(restaurantCollection, 4);
